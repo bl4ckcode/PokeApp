@@ -6,6 +6,7 @@ Pokemon App Challenge
 - MVVM
 - SwiftUI
 - Combine
+- URLSession
 
 No third libraries has been used, only Swift frameworks.
 
