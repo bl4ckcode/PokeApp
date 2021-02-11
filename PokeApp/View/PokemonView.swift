@@ -58,8 +58,10 @@ struct PokemonStateView: View {
                             Image("Pokeball")
                                 .scaledToFit()
                                 .scaleEffect()
-                        }.buttonStyle(PlainButtonStyle())
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    .navigationTitle("")
+                }
             )
         case .error(let error):
             return AnyView(

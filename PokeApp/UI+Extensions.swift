@@ -15,13 +15,3 @@ extension Image {
         return self.resizable()
     }
 }
-
-extension String: Identifiable {
-    public var id: String { self }
-}
-
-extension String {
-    func toURL() -> URL {
-        return URL(string: self)!
-    }
-}

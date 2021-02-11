@@ -14,41 +14,50 @@ struct PokemonInfoView: View {
     
     var body: some View {
         NavigationView {
-            VStack (alignment: .leading) {
-                ZStack {
+            ZStack(alignment: .leading) {
+                ZStack(alignment: .center) {
                     Image("PokemonBackground")
                         .resizable()
                         .scaledToFill()
                         .edgesIgnoringSafeArea(.all)
                         .blur(radius: 2.0)
-                }.overlay(DetailView(pokemon: pokemon))
+                }
+                VStack (alignment: .center) {
+                    PokemonImageScrollView(pokemon: pokemon)
+                        .frame(maxHeight: 200)
+                    Text(pokemon.name ?? "")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.red)
+                    Text(pokemon.getHeight() ?? "")
+                        .font(.caption)
+                        .bold()
+                    Text(pokemon.getWeight() ?? "s")
+                        .font(.caption)
+                        .bold()
+                    Spacer().frame(maxWidth: .infinity)
+                }
+                .frame(maxHeight: .infinity)
+                .padding()
             }
+            
         }
     }
 }
 
-struct DetailView: View {
+struct PokemonImageScrollView: View {
     let pokemon: Pokemon
-
+    
     var body: some View {
-        VStack (alignment: .leading) {
+        GeometryReader { geometry in
             ScrollView (.horizontal) {
                 HStack(spacing: 16) {
                     ForEach(pokemon.getPokemonImagesURL()) { imageUrl in
                         PokemonImageView(pokemonName: pokemon.name!, imageUrl: imageUrl)
                     }
                 }
-            }
-            VStack (alignment: .center) {
-                Text(pokemon.name ?? "")
-                    .font(.largeTitle)
-                    .bold()
-                Text(pokemon.getHeight() ?? "")
-                    .font(.caption)
-                    .bold()
-                Text(pokemon.getWeight() ?? "")
-                    .font(.caption)
-                    .bold()
+                .padding()
+                .frame(width: geometry.size.width)
             }
         }
     }
@@ -62,8 +71,8 @@ struct PokemonImageView: View {
     Image(systemName: "pokemon\(pokemonName)")
         .loadImageWith(url: imageUrl.toURL())
         .resizable()
-        .frame(width: 110, height: 180)
-        .border(Color.gray.opacity(0.5), width: 0.5)
+        .scaledToFit()
+        .border(Color.green.opacity(0.5), width: 0.5)
         .cornerRadius(8)
     }
 }
