@@ -21,13 +21,16 @@ struct PokemonView: View {
                     .edgesIgnoringSafeArea(.all)
                     .blur(radius: 5.0)
             }
+            .overlay(PokemonStateView(viewModel: viewModel))
         }
-        .overlay(PokemonStateView(viewModel: viewModel))
         .onAppear(perform: viewModel.getPokemon)
     }
 }
 
 struct PokemonStateView: View {
+    let screenWidth = UIScreen.main.bounds.size.width
+    let screenHeight = UIScreen.main.bounds.size.height
+    
     @ObservedObject var viewModel = PokemonViewModel()
     
     var body: some View {
@@ -39,23 +42,24 @@ struct PokemonStateView: View {
         case .loaded:
             return AnyView(
                 VStack (alignment: .center) {
-                    Image(systemName: "pokemonditto")
-                        .loadImageWith(url: viewModel.pokemon.getImageURL())
-                        .resizable()
-                        .hoverEffect()
+                    Text("Who is this pokemon?")
+                        .font(.largeTitle)
+                        .bold()
+                    Image(systemName: "pokemon\(viewModel.pokemon.name!)")
+                        .loadImageWith(url: viewModel.pokemon.getFrontDefaultImage())
+                        .renderingMode(.template)
+                        .foregroundColor(Color.black)
                         .scaledToFit()
+                        .frame(width: screenWidth, height: screenHeight/3)
+                        .hoverEffect()
                         .background(Color.clear)
-                    NavigationView{
-                        NavigationLink(
-                            destination: PokemonInfoView()) {
-                                Text(viewModel.pokemon.name ?? "")
-                                    .background(Color.purple)
-                                    .foregroundColor(.white)
-                                    .font(.title)
-                                    .padding()
-                            }.buttonStyle()
+                        .padding()
+                    NavigationLink (destination: PokemonInfoView(pokemon: viewModel.pokemon)) {
+                            Image("Pokeball")
+                                .scaledToFit()
+                                .scaleEffect()
+                        }.buttonStyle(PlainButtonStyle())
                     }
-                }
             )
         case .error(let error):
             return AnyView(
@@ -76,9 +80,5 @@ struct PokemonStateView: View {
 struct PokemonView_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
-    }
-    
-    func goToPokemonInfo() {
-        
     }
 }

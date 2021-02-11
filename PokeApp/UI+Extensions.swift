@@ -5,4 +5,23 @@
 //  Created by Carlos Alves on 07/02/21.
 //
 
-import Foundation
+import SwiftUI
+
+extension Image {
+    func loadImageWith(url: URL?) -> Self {
+        if let url = url, let data = try? Data(contentsOf: url) {
+            return Image(uiImage: UIImage(data: data)!).resizable()
+        }
+        return self.resizable()
+    }
+}
+
+extension String: Identifiable {
+    public var id: String { self }
+}
+
+extension String {
+    func toURL() -> URL {
+        return URL(string: self)!
+    }
+}
