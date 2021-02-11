@@ -7,6 +7,7 @@ Pokemon App Challenge
 - SwiftUI
 - Combine
 - URLSession
+- Images were either downloaded ou picked from FlatIcon for non commercial use
 
 No third libraries has been used, only Swift frameworks.
 
